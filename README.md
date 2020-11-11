@@ -1,6 +1,6 @@
-## Getting Started
+## Darwin
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Project is created to apply variants of clustering to genetic algorithm.  
 
 ## Folder Structure
 
