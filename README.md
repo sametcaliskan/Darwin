@@ -21,4 +21,4 @@ Node includes dependencies, weight of dependencies, a unique nodeID and nodeName
 nodeName should be name of the class where it is written in .rsf files.
 dependencies should include relations of the node with other nodes.
 weights should be aligned respect to dependencies and it represents strong of relation.
-
+nodeId should be unique.
