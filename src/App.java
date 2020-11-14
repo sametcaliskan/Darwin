@@ -23,16 +23,30 @@ public class App {
         int[] inter = new int[numberOfCluester];
         int[] intra = new int[numberOfCluester];
         for (int i = 0; i < numberOfCluester; i++) {
+            int numberOfIndividuals = 0;
+            int clusterName = i + 1;
             int interSum = 0;
             int intraSum = 0;
             for (Node n : nodes) {
                 if (n.getCluster() == (i + 1)) {
-                    interSum += n.getInterDependencyCount();
-                    intraSum += n.getIntraDependencyCount();
+                    numberOfIndividuals++;
+                    for (Node dep : n.getDependencies()) {
+                        if (dep.getCluster() == n.getCluster()) {
+                            // get just one relation as intra
+                            if (dep.getId() > n.getId()) {
+                                intraSum++;
+                            }
+                        } else {
+                            interSum++;
+                        }
+                    }
                 }
             }
+            double basicMq = calculateBasicMq(numberOfIndividuals, intraSum, interSum);
             inter[i] = interSum;
             intra[i] = intraSum;
+            System.out.println("cluster: " + clusterName + " [ number of individuals: " + numberOfIndividuals
+                    + " inter edges:" + interSum + ", intra edges:" + intraSum + ", BasicMQ: " + basicMq + " ]");
         }
 
         for (int i = 0; i < numberOfCluester; i++) {
@@ -41,5 +55,10 @@ public class App {
                     "cluster " + clusterName + " [inter edges :" + inter[i] + ", intra edges :" + intra[i] + "]");
             System.out.println("");
         }
+    }
+
+    public static double calculateBasicMq(int numberOfIndividuals, int intraSum, int interSum) {
+        return ((intraSum / numberOfIndividuals)
+                - (2 * interSum / (numberOfIndividuals * numberOfIndividuals - numberOfIndividuals)));
     }
 }
