@@ -1,12 +1,37 @@
-public abstract class GeneticAlgorithmAbstract {
-   private Node[] nodes;
+import java.util.List;
 
-   protected GeneticAlgorithmAbstract(Node[] nodes) {
-      this.nodes = nodes;
+public abstract class GeneticAlgorithmAbstract {
+   private List<Node> population;
+   private int numberOfCluster;
+   private int[] populationArray;
+
+   protected GeneticAlgorithmAbstract(List<Node> population, int numberOfCluster) {
+      this.population = population;
+      this.numberOfCluster = numberOfCluster;
    }
 
-   public Node[] getNodes() {
-      return nodes;
+   public List<Node> getPopulation() {
+      return population;
+   }
+
+   public void setPopulation(List<Node> population) {
+      this.population = population;
+   }
+
+   public int getNumberOfCluster() {
+      return numberOfCluster;
+   }
+
+   public void setNumberOfCluster(int numberOfCluster) {
+      this.numberOfCluster = numberOfCluster;
+   }
+
+   public int[] getPopulationArray() {
+      return populationArray;
+   }
+
+   public void setPopulationArray(int[] populationArray) {
+      this.populationArray = populationArray;
    }
 
    abstract void initializePopulation();

@@ -1,7 +1,9 @@
+import java.util.List;
+
 public class Football extends GeneticAlgorithmAbstract {
 
-   protected Football(Node[] nodes) {
-      super(nodes);
+   protected Football(List<Node> population, int cluster) {
+      super(population, cluster);
    }
 
    @Override
@@ -11,7 +13,18 @@ public class Football extends GeneticAlgorithmAbstract {
 
    @Override
    void initializePopulation() {
-      System.out.println("Football applied initalitation on population!");
+      List<Node> population = getPopulation();
+      int popSize = population.size();
+      int numberOfCluester = getNumberOfCluster();
+      int[] populationArray = new int[popSize];
+      int cluster;
+      for (int i = 0; i < popSize; i++) {
+         cluster = (int) (Math.random() * numberOfCluester) + 1;
+         populationArray[i] = cluster;
+         population.get(i).setCluster(cluster);
+      }
+      setPopulationArray(populationArray);
+      System.out.println("Football applied initialitation on population!");
    }
 
    @Override

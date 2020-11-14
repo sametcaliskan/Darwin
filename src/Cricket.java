@@ -1,6 +1,8 @@
+import java.util.List;
+
 public class Cricket extends GeneticAlgorithmAbstract {
-   protected Cricket(Node[] nodes) {
-      super(nodes);
+   protected Cricket(List<Node> population, int cluster) {
+      super(population, cluster);
    }
 
    @Override

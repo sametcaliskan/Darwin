@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class that represents a Node in a Graph. Nodes contain an array of integers
  * that represents the Node's dependencies (edges or connections with other
@@ -28,11 +31,7 @@ public class Node implements java.io.Serializable {
   /**
    * The array of dependencies (edges) to other nodes
    */
-  private int[] dependencies;
-  /**
-   * The array of weights
-   */
-  private int[] weights;
+  private List<Node> dependencies;
   /**
    * Unique node id
    */
@@ -40,11 +39,15 @@ public class Node implements java.io.Serializable {
   /**
    * The string's name
    */
-  private String nodeName;
+  private String name;
   /**
    * The Node's current cluster
    */
   private int cluster;
+
+  private int interDependencyCount;
+
+  private int intraDependencyCount;
 
   /**
    * Empty contructor
@@ -57,36 +60,16 @@ public class Node implements java.io.Serializable {
    * Node constructor that receives a node's name, an array of dependencies and an
    * array of weights.
    *
-   * @param name    the node's name
-   * @param deps    the list of dependencies (edges) for this node
-   * @param weights the list of weights for each of the dependencies for this node
-   * @param nodeID  the unique node id
-   */
-  public Node(String name, int[] deps, int[] weights, int nodeID) {
-    setName(name);
-    setDependencies(deps);
-    setWeights(weights);
-    setNodeID(nodeID);
-  }
-
-  /**
-   * Node constructor that receives a node's name, an array of dependencies and an
-   * array of weights. This constructor uses a weight of 1 for each dependency as
-   * default.
-   *
    * @param name   the node's name
-   * @param deps   the list of dependencies (edges) for this node
    * @param nodeID the unique node id
    */
-  public Node(String name, int[] deps, int nodeID) {
-    setDependencies(deps);
-    int[] ws = new int[deps.length];
-    for (int i = 0; i < deps.length; ++i) {
-      ws[i] = 1;
-    }
-    setWeights(ws);
+  public Node(String name, int nodeID) {
     setName(name);
     setNodeID(nodeID);
+    setCluster(0);
+    this.dependencies = new ArrayList<>();
+    this.interDependencyCount = 0;
+    this.intraDependencyCount = 0;
   }
 
   public int getCluster() {
@@ -113,9 +96,9 @@ public class Node implements java.io.Serializable {
    */
   public String toString() {
     StringBuilder str = new StringBuilder();
-    str.append("\n" + nodeName + " = ");
-    for (int i = 0; i < dependencies.length; ++i) {
-      str.append(dependencies[i] + " / ");
+    str.append("\n" + this.name + " = ");
+    for (Node n : dependencies) {
+      str.append(n.getName() + " / ");
     }
     return str.toString();
   }
@@ -124,10 +107,10 @@ public class Node implements java.io.Serializable {
    * Obtains this Node's name.
    *
    * @return the node's name as a string
-   * @see #setName(java.lang.String)
+   * @see #setName(String)
    */
   public String getName() {
-    return nodeName;
+    return name;
   }
 
   /**
@@ -137,72 +120,65 @@ public class Node implements java.io.Serializable {
    * @see #getName()
    */
   public void setName(String name) {
-    nodeName = name;
+    this.name = name;
   }
 
   /**
-   * Sets the array of dependencies (edges) for this Node.
+   * Sets the list of dependencies (nodes) for this Node.
    *
-   * @param deps the array of dependencies (edges)
+   * @param node the object of node
    * @see #getDependencies()
-   * @see #weights
    */
-  public void setDependencies(int[] deps) {
-    dependencies = deps;
+  public void setDependencies(Node node) {
+    if (!isNodeInDependenciesList(node.getName())) {
+      dependencies.add(node);
+    }
   }
 
   /**
-   * Obtains the array of dependencies (edges) for this Node
+   * Obtains the list of dependencies (nodes) for this Node
    *
-   * @return the array of dependencies (edges)
-   * @see #setDependencies(int[])
-   * @see #weights
+   * @return the list of dependencies (nodes)
+   * @see #setDependencies(Node)
    */
-  public int[] getDependencies() {
+  public List<Node> getDependencies() {
     return dependencies;
   }
 
-  /**
-   * Sets the array of weights for this Node's connections with other nodes.
-   *
-   * @param ws the array of weights to set
-   * @see #getWeights()
-   * @see #dependencies
-   */
-  public void setWeights(int[] ws) {
-    weights = ws;
+  private boolean isNodeInDependenciesList(String name) {
+    for (Node node : dependencies) {
+      if (node.getName().equals(name)) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  /**
-   * Obtains the array of weights for this Node's connections with other nodes.
-   *
-   * @return the array of weights
-   * @see #setWeights(int[])
-   * @see #dependencies
-   */
-  public int[] getWeights() {
-    return weights;
+  public int getInterDependencyCount() {
+    setDependencyCounts();
+    return this.interDependencyCount;
   }
 
-  /**
-   * Returns a copy of the current node.
-   *
-   * @return a copy of this node
-   */
-  public Node cloneNode() {
-    Node n = new Node();
-    n.setName(getName());
-    n.cluster = cluster;
-    if (dependencies != null) {
-      n.dependencies = new int[dependencies.length];
-      System.arraycopy(dependencies, 0, n.dependencies, 0, dependencies.length);
-    }
-    if (weights != null) {
-      n.weights = new int[weights.length];
-      System.arraycopy(weights, 0, n.weights, 0, weights.length);
-    }
+  public int getIntraDependencyCount() {
+    setDependencyCounts();
+    return this.intraDependencyCount;
+  }
 
-    n.nodeID = nodeID;
-    return n;
+  private void setDependencyCounts() {
+    for (Node node : this.dependencies) {
+      if (node.getCluster() == this.getCluster()) {
+        incrementIntraDependencyCount();
+      } else {
+        incrementInterDependencyCount();
+      }
+    }
+  }
+
+  private void incrementInterDependencyCount() {
+    this.interDependencyCount += 1;
+  }
+
+  private void incrementIntraDependencyCount() {
+    this.intraDependencyCount += 1;
   }
 }
