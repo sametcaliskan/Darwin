@@ -24,7 +24,7 @@ public class BasicMQ {
                     intraSum += n.getIntraDependencyCount();
                 }
             }
-            double basicMq = calculate(numberOfIndividuals, intraSum, interSum);
+            double basicMq = calculate(numberOfCluester, intraSum, interSum);
             System.out.println("cluster: " + clusterName + " [ number of individuals: " + numberOfIndividuals
                     + " inter edges:" + interSum + ", intra edges:" + intraSum + ", BasicMQ: " + basicMq + " ]");
         }

@@ -155,16 +155,16 @@ public class Node implements java.io.Serializable {
   }
 
   public int getInterDependencyCount() {
-    setDependencyCounts();
     return this.interDependencyCount;
   }
 
   public int getIntraDependencyCount() {
-    setDependencyCounts();
     return this.intraDependencyCount;
   }
 
-  private void setDependencyCounts() {
+  public void calculateDependency() {
+    this.intraDependencyCount = 0;
+    this.interDependencyCount = 0;
     for (Node node : this.dependencies) {
       if (node.getCluster() == this.getCluster()) {
         incrementIntraDependencyCount();

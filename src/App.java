@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class App {
@@ -12,12 +13,26 @@ public class App {
         GeneticAlgorithmAbstract football = new Football(nodes, numberOfCluester);
         football.initializePopulation();
         List<Node> popList = football.getPopulation();
-        int[] population = football.getPopulationArray();
-        // System.out.println(Arrays.toString(population));
-
-        // calculate basicMQ of clusters
+        for (Node node : popList) {
+            node.calculateDependency();
+        }
         BasicMQ basicMQ = new BasicMQ();
         basicMQ.calculateBasicMQ(popList, numberOfCluester);
+        for (int i = 0; i < 100; i++) {
+            popList = football.getPopulation();
+            for (Node node : popList) {
+                node.calculateDependency();
+            }
+            int[] population = football.getPopulationArray();
+            // System.out.println(Arrays.toString(population));
 
+            football.selection();
+            football.crossover();
+            football.mutation();
+        }
+        System.out.println("------------------------------");
+        // calculate basicMQ of clusters
+        basicMQ = new BasicMQ();
+        basicMQ.calculateBasicMQ(popList, numberOfCluester);
     }
 }
