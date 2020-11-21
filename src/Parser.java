@@ -45,7 +45,7 @@ public class Parser {
         List<Node> sorted = sortByCluster(nodeList);
 
         for (Node n : sorted) {
-            bw.write(n.getCluster() + " " + n.getName());
+            bw.write("contains " + n.getCluster() + " " + n.getName());
             bw.newLine();
         }
         bw.close();
