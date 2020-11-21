@@ -6,9 +6,9 @@ public class BasicMQ {
         // empty contructor
     }
 
-    private double calculate(int numberOfIndividuals, int intraSum, int interSum) {
-        return ((intraSum / numberOfIndividuals)
-                - (2 * interSum / (numberOfIndividuals * numberOfIndividuals - numberOfIndividuals)));
+    private double calculate(int numberOfCluester, int intraSum, int interSum) {
+        return ((intraSum / numberOfCluester)
+                - (2 * interSum / (numberOfCluester * numberOfCluester - numberOfCluester)));
     }
 
     public void calculateBasicMQ(List<Node> nodes, int numberOfCluester) {

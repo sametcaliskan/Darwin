@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - MoJo",
+            "request": "launch",
+            "mainClass": "mojo.MoJo",
+            "projectName": "Pea_de02d09c"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - App",
             "request": "launch",
             "mainClass": "App",

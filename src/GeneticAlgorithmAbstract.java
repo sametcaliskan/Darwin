@@ -1,42 +1,21 @@
 import java.util.List;
 
 public abstract class GeneticAlgorithmAbstract {
-   private List<Node> population;
-   private int numberOfCluster;
-   private int[] populationArray;
-   //refactor later
-   private double turboMQ;
+   private Population population;
+   private List<Individual> selectedIndividuals;
 
-   protected GeneticAlgorithmAbstract(List<Node> population, int numberOfCluster) {
-      this.population = population;
-      this.numberOfCluster = numberOfCluster;
+   protected GeneticAlgorithmAbstract() {
    }
 
-   public List<Node> getPopulation() {
+   public Population getPopulation() {
       return population;
    }
 
-   public void setPopulation(List<Node> population) {
+   public void setPopulation(Population population) {
       this.population = population;
    }
 
-   public int getNumberOfCluster() {
-      return numberOfCluster;
-   }
-
-   public void setNumberOfCluster(int numberOfCluster) {
-      this.numberOfCluster = numberOfCluster;
-   }
-
-   public int[] getPopulationArray() {
-      return populationArray;
-   }
-
-   public void setPopulationArray(int[] populationArray) {
-      this.populationArray = populationArray;
-   }
-
-   abstract void initializePopulation();
+   abstract void initializePopulation(int individualNumber, int numberOfCluester, List<Node> nodeList);
 
    abstract void fitnessFunction();
 
@@ -50,7 +29,7 @@ public abstract class GeneticAlgorithmAbstract {
    public final void play() {
 
       // initialize the population
-      initializePopulation();
+      // initializePopulation();
 
       // calculate fitness of individuals
       fitnessFunction();
@@ -66,11 +45,11 @@ public abstract class GeneticAlgorithmAbstract {
 
    }
 
-public double getTurboMQ() {
-	return turboMQ;
-}
+   public List<Individual> getSelectedIndividuals() {
+      return selectedIndividuals;
+   }
 
-public void setTurboMQ(double turboMQ) {
-	this.turboMQ = turboMQ;
-}
+   public void setSelectedIndividuals(List<Individual> selectedIndividuals) {
+      this.selectedIndividuals = selectedIndividuals;
+   }
 }

@@ -6,26 +6,12 @@ public class Individual {
 	private int numberOfCluster;
 	private String name;
 	private double turboMQ;
-	
-	public Individual(List<Node> nodeList,int numberOfCluster,String name) {
+
+	public Individual(List<Node> nodeList, int numberOfCluster, String name) {
 		this.setName(name);
 		this.nodeList = new ArrayList<Node>(nodeList);
 		this.numberOfCluster = numberOfCluster;
-		initializePopulation();
 	}
-	
-	private void initializePopulation() {
-	      
-	      int popSize = nodeList.size();
-	 
-	      int cluster;
-	      for (int i = 0; i < popSize; i++) {
-	         cluster = (int) (Math.random() * numberOfCluster) + 1;
-	         nodeList.get(i).setCluster(cluster);
-	      }
-	      
-	      System.out.println("Football applied initialitation on population!");
-	  }
 
 	public String getName() {
 		return name;
@@ -41,5 +27,21 @@ public class Individual {
 
 	public void setTurboMQ(double turboMQ) {
 		this.turboMQ = turboMQ;
+	}
+
+	public List<Node> getNodeList() {
+		return nodeList;
+	}
+
+	public void setNodeList(List<Node> nodeList) {
+		this.nodeList = nodeList;
+	}
+
+	public int getNumberOfCluster() {
+		return numberOfCluster;
+	}
+
+	public void setNumberOfCluster(int numberOfCluster) {
+		this.numberOfCluster = numberOfCluster;
 	}
 }

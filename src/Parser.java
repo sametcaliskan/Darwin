@@ -18,52 +18,50 @@ public class Parser {
         this.numberOfCluster = 0;
         this.index = 0;
     }
-    
-    public void generateDependencyRsf(List<Node> nodeList,String fileName) throws IOException {
-    	File fout = new File("libs/outputs/dependencies/"+fileName);
-    	//fout.createNewFile();
-    	FileOutputStream fos = new FileOutputStream(fout);
-     
-    	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-   
-    	for(Node n: nodeList) {
-    		for(Node dependentNodes:n.getDependencies()) {
-    			bw.write("depends "+n.getName()+" "+dependentNodes.getName());
-        		bw.newLine();
-    		}
-    	}
-    	bw.close();
+
+    public void generateDependencyRsf(List<Node> nodeList, String fileName) throws IOException {
+        File fout = new File("libs/outputs/dependencies/" + fileName);
+        // fout.createNewFile();
+        FileOutputStream fos = new FileOutputStream(fout);
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+        for (Node n : nodeList) {
+            for (Node dependentNodes : n.getDependencies()) {
+                bw.write("depends " + n.getName() + " " + dependentNodes.getName());
+                bw.newLine();
+            }
+        }
+        bw.close();
     }
-    
-    public void generateClusterRsf(List<Node> nodeList,String fileName) throws IOException {
-    	File fout = new File("libs/outputs/clusters/"+fileName);
-    	//fout.createNewFile();
-    	FileOutputStream fos = new FileOutputStream(fout);
-     
-    	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-    	
-    	List<Node> sorted = sortByCluster(nodeList);
-    	
-    	for(Node n: sorted) {
-		    bw.write("contains "+n.getCluster()+" "+n.getName());
-    		bw.newLine();
-    	}
-    	bw.close();
+
+    public void generateClusterRsf(List<Node> nodeList, String fileName) throws IOException {
+        File fout = new File("libs/outputs/clusters/" + fileName);
+        // fout.createNewFile();
+        FileOutputStream fos = new FileOutputStream(fout);
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+        List<Node> sorted = sortByCluster(nodeList);
+
+        for (Node n : sorted) {
+            bw.write(n.getCluster() + " " + n.getName());
+            bw.newLine();
+        }
+        bw.close();
     }
-    
-    private List<Node> sortByCluster(List<Node> nodeList){
-    	List<Node> returnList = new ArrayList<Node>();
-    	for(int i=1;i<15;i++) {
-    		for(Node n: nodeList) {
-    			if(n.getCluster()==i) {
-    				returnList.add(n);
-    			}
-    		}
-    	}
-    	return returnList;
+
+    private List<Node> sortByCluster(List<Node> nodeList) {
+        List<Node> returnList = new ArrayList<Node>();
+        for (int i = 1; i < 15; i++) {
+            for (Node n : nodeList) {
+                if (n.getCluster() == i) {
+                    returnList.add(n);
+                }
+            }
+        }
+        return returnList;
     }
-    
-    
 
     // TODO: should be refactored
     public List<Node> getNodes() throws IOException {
