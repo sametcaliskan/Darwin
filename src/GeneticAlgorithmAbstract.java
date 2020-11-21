@@ -4,6 +4,8 @@ public abstract class GeneticAlgorithmAbstract {
    private List<Node> population;
    private int numberOfCluster;
    private int[] populationArray;
+   //refactor later
+   private double turboMQ;
 
    protected GeneticAlgorithmAbstract(List<Node> population, int numberOfCluster) {
       this.population = population;
@@ -63,4 +65,12 @@ public abstract class GeneticAlgorithmAbstract {
       mutation();
 
    }
+
+public double getTurboMQ() {
+	return turboMQ;
+}
+
+public void setTurboMQ(double turboMQ) {
+	this.turboMQ = turboMQ;
+}
 }
