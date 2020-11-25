@@ -5,17 +5,18 @@ import pivot.Pivot;
 public class App {
     public static void main(String[] args) throws IOException {
         // read files and create nodes
-
-        Parser parser = new Parser("libs/sample-projects/bash");
+    	
+/*        Parser parser = new Parser("libs/sample-projects/bash");
         List<Node> nodes = parser.getNodes();
         int numberOfCluester = parser.getNumberOfCluster();
 
-        int individualNumber = 10;
+        int individualNumber = 10;*/
         GeneticAlgorithmAbstract randomGa = new GeneticAlgoritmFullyRandom();
-        randomGa.initializePopulation(individualNumber, numberOfCluester, nodes);
+        randomGa.play();
+       /* randomGa.initializePopulation(individualNumber, numberOfCluester, nodes);
 
         // generate rsf files for turboMQ and pivot crossover
-        generateRsfFiles();
+        generateRsfFiles();*/
     }
 
     public static void generateRsfFiles() {

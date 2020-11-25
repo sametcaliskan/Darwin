@@ -29,7 +29,7 @@ public class Node implements java.io.Serializable {
 
   public void setCluster(int c) {
     cluster = c;
-    calculateDependency();
+    //calculateDependency();
   }
 
   public int getId() {

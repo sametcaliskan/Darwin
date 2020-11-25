@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Individual {
+public class Individual implements Comparable<Individual>{
 	private List<Node> nodeList;
 	private int numberOfCluster;
 	private String name;
@@ -11,6 +11,16 @@ public class Individual {
 		this.setName(name);
 		this.nodeList = new ArrayList<Node>(nodeList);
 		this.numberOfCluster = numberOfCluster;
+	}
+	
+	@Override
+	public int compareTo(Individual u) {
+		if(this.getTurboMQ()>u.getTurboMQ())
+			return 1;
+		else if(this.getTurboMQ()==u.getTurboMQ())
+			return 0;
+		else
+			return -1;
 	}
 
 	public String getName() {

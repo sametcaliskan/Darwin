@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Parser {
 
-    private final String path;
+    private String path;
     private int numberOfCluster;
     private int index;
 
@@ -17,6 +17,11 @@ public class Parser {
         this.path = path;
         this.numberOfCluster = 0;
         this.index = 0;
+    }
+    
+    public Parser() {
+		this.numberOfCluster = 0;
+	    this.index = 0;
     }
 
     public void generateDependencyRsf(List<Node> nodeList, String fileName) throws IOException {
@@ -45,7 +50,7 @@ public class Parser {
         List<Node> sorted = sortByCluster(nodeList);
 
         for (Node n : sorted) {
-            bw.write(n.getCluster() + " " + n.getName());
+            bw.write("contains "+n.getCluster() + " " + n.getName());
             bw.newLine();
         }
         bw.close();
