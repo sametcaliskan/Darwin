@@ -49,7 +49,7 @@ public abstract class GeneticAlgorithmAbstract {
 
       // calculate fitness of individuals
 	  fitnessFunction();
-	  for(int i=0; i<1; i++) {
+	  for(int i=0; i<4; i++) {
 		 
 	      // selection for evoluation
 	      selection();

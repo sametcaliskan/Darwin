@@ -7,9 +7,9 @@ import java.util.Random;
 import turbo.TurboMQ;
 
 public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
-   List<Individual> operatedIndividualList;
+   List<Individual> selectedIndividualList;
    protected GeneticAlgoritmFullyRandom() {
-	  operatedIndividualList = new ArrayList<>();
+	  selectedIndividualList = new ArrayList<>();
       Population population = new Population();
       super.setPopulation(population);
    }
@@ -36,14 +36,14 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
    @Override
    void selection() {
 	  List<Individual> individualList = super.getPopulation().getIndividualList();
-	  int selectedParents = (int) (individualList.size()*0.15);
+	  int selectedParentsNumber = (int) (individualList.size()*0.15);
 	  Collections.sort(individualList);
 	  Collections.reverse(individualList);
 //	  for(Individual i:individualList) {
 //		  System.out.println(i.getTurboMQ());
 //	  }
-	  for(int i =0; i<selectedParents;i++) {
-		  operatedIndividualList.add(individualList.get(i));
+	  for(int i =0; i<selectedParentsNumber;i++) {
+		  selectedIndividualList.add(individualList.get(i));
 	  }
 	  super.getMaxTurboMQList().add(individualList.get(0).getTurboMQ());
       // select list of individuals
@@ -52,49 +52,51 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 
    @Override
    void crossover() {
-	  int parentListSize = operatedIndividualList.size();
+	  int parentListSize = selectedIndividualList.size();
 	  List<Individual> childList = new ArrayList<>();
+	  List<Node> nodeList=super.getPopulation().individualList.get(0).getNodeList();
+	  int cluster=getPopulation().individualList.get(0).getNumberOfCluster();
 	  for(int i=0; i<parentListSize;i++) {
 		  Individual child = null;
 		  for(int j=i+1; j<parentListSize;j++) {
-			  child = new Individual(getPopulation().individualList.get(0).getNodeList(),
-					  getPopulation().individualList.get(0).getNumberOfCluster(),
-					  i+""+j);
-			  for(int k=0; k<operatedIndividualList.get(i).getNodeList().size();k++) {
-				  if(operatedIndividualList.get(i).getNodeList().get(k).getCluster()
-						  ==operatedIndividualList.get(j).getNodeList().get(k).getCluster()) {
+			  child = new Individual(nodeList,cluster,i+""+j);
+			  // compare cluster of every node
+			  for(int k=0; k<nodeList.size();k++) {
+				  int compareClusterA=selectedIndividualList.get(i).getNodeList().get(k).getCluster();
+				  int compareClusterB=selectedIndividualList.get(j).getNodeList().get(k).getCluster();
+				  if(compareClusterA==compareClusterB) {
 					  child.getNodeList().get(k).
-					  setCluster(operatedIndividualList.get(i).getNodeList().get(k).getCluster());
+					  setCluster(compareClusterA);
 				  }else {
 					  int rnd = new Random().nextInt(2);
 					  if(rnd ==0) {
 						  child.getNodeList().get(k).
-						  setCluster(operatedIndividualList.get(i).getNodeList().get(k).getCluster());
+						  setCluster(compareClusterA);
 					  }else {
 						  child.getNodeList().get(k).
-						  setCluster(operatedIndividualList.get(j).getNodeList().get(k).getCluster());
+						  setCluster(compareClusterB);
 					  }
 				  }
 			  }
 			  childList.add(child);
 		  }
 	  }
-	  operatedIndividualList = childList;
+	  selectedIndividualList = childList;
       System.out.println("RandomGa applied crossover on population!");
    }
 
    @Override
    void mutation() {
-	  int candidateMutationSize = (int) (operatedIndividualList.get(0).getNodeList().size()*0.01);
-	  for(Individual ind:operatedIndividualList) {
+	  int candidateMutationSize = (int) (selectedIndividualList.get(0).getNodeList().size()*0.01);
+	  for(Individual ind:selectedIndividualList) {
 		  for(int i=0;i<candidateMutationSize;i++) {
-			  int rndIndex = new Random().nextInt(operatedIndividualList.get(0).getNodeList().size());
-			  int rndCluster = new Random().nextInt(operatedIndividualList.get(0).getNumberOfCluster()+1);
+			  int rndIndex = new Random().nextInt(selectedIndividualList.get(0).getNodeList().size());
+			  int rndCluster = new Random().nextInt(selectedIndividualList.get(0).getNumberOfCluster()+1);
 			  ind.getNodeList().get(rndIndex).setCluster(rndCluster+1);
 		  }
 	  }
-	  super.getPopulation().setIndividualList(operatedIndividualList);
-      System.out.println("RandomGa applied mutation on population! "+operatedIndividualList.size());
+	  super.getPopulation().setIndividualList(selectedIndividualList);
+      System.out.println("RandomGa applied mutation on population! ");
    }
 
    @Override
@@ -102,12 +104,13 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 	  String[] argsForTurbo = new String[2]; 
 	  List<Individual> individualList = super.getPopulation().getIndividualList();
 	  int populationSize = individualList.size();
-	  System.out.println(populationSize);
+	  System.out.println("Individual size of population:"+populationSize);
 	  Parser parser = new Parser();
 	  try {
 		parser.generateDependencyRsf(individualList.get(0).getNodeList(), "all-dep.rsf");
 		for(int i=0; i<populationSize; i++) {
 			Individual eachIndividual = individualList.get(i);
+			//System.out.println("each individual node list size:" +eachIndividual.getNodeList().size());
 			parser.generateClusterRsf(eachIndividual.getNodeList(),"cluster.rsf");
 			argsForTurbo[0] = "libs/outputs/dependencies/all-dep.rsf"; 
 			argsForTurbo[1] = "libs/outputs/clusters/cluster.rsf"; 

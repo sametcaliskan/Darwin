@@ -46,27 +46,14 @@ public class Parser {
         FileOutputStream fos = new FileOutputStream(fout);
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-
-        List<Node> sorted = sortByCluster(nodeList);
-
-        for (Node n : sorted) {
+        
+        for (Node n : nodeList) {
             bw.write("contains " + n.getCluster() + " " + n.getName());
             bw.newLine();
         }
         bw.close();
     }
 
-    private List<Node> sortByCluster(List<Node> nodeList) {
-        List<Node> returnList = new ArrayList<Node>();
-        for (int i = 1; i < 15; i++) {
-            for (Node n : nodeList) {
-                if (n.getCluster() == i) {
-                    returnList.add(n);
-                }
-            }
-        }
-        return returnList;
-    }
 
     // TODO: should be refactored
     public List<Node> getNodes() throws IOException {
