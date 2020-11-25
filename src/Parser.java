@@ -9,12 +9,17 @@ import java.util.*;
 
 public class Parser {
 
-    private final String path;
+    private String path;
     private int numberOfCluster;
     private int index;
 
     public Parser(String path) {
         this.path = path;
+        this.numberOfCluster = 0;
+        this.index = 0;
+    }
+
+    public Parser() {
         this.numberOfCluster = 0;
         this.index = 0;
     }

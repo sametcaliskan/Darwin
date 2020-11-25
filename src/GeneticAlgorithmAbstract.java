@@ -1,10 +1,14 @@
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GeneticAlgorithmAbstract {
    private Population population;
    private List<Individual> selectedIndividuals;
+   private List<Double> maxTurboMQList;
 
    protected GeneticAlgorithmAbstract() {
+	   setMaxTurboMQList(new ArrayList<>());
    }
 
    public Population getPopulation() {
@@ -29,20 +33,36 @@ public abstract class GeneticAlgorithmAbstract {
    public final void play() {
 
       // initialize the population
-      // initializePopulation();
+	  Parser parser = new Parser("libs/sample-projects/bash");
+      List<Node> nodes = null;
+	  try {
+		  nodes = parser.getNodes();
+	  } catch (IOException e) {
+		  // TODO Auto-generated catch block
+		  e.printStackTrace();
+	  }
+      int numberOfCluester = parser.getNumberOfCluster();
+
+      int individualNumber = 100;
+      initializePopulation(individualNumber, numberOfCluester, nodes);
+
 
       // calculate fitness of individuals
-      fitnessFunction();
-
-      // selection for evoluation
-      selection();
-
-      // crossover
-      crossover();
-
-      // mutation
-      mutation();
-
+	  fitnessFunction();
+	  for(int i=0; i<1; i++) {
+		 
+	      // selection for evoluation
+	      selection();
+	      // crossover
+	      crossover();
+	      // mutation
+	      mutation();
+	  
+	      fitnessFunction();
+	  }
+	  
+	  for(Double d: getMaxTurboMQList())
+		  System.out.print(d+" ");
    }
 
    public List<Individual> getSelectedIndividuals() {
@@ -52,4 +72,12 @@ public abstract class GeneticAlgorithmAbstract {
    public void setSelectedIndividuals(List<Individual> selectedIndividuals) {
       this.selectedIndividuals = selectedIndividuals;
    }
+
+public List<Double> getMaxTurboMQList() {
+	return maxTurboMQList;
+}
+
+public void setMaxTurboMQList(List<Double> maxTurboMQList) {
+	this.maxTurboMQList = maxTurboMQList;
+}
 }
