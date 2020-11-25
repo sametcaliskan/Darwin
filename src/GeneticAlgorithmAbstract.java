@@ -4,7 +4,6 @@ import java.util.List;
 
 public abstract class GeneticAlgorithmAbstract {
    private Population population;
-   private List<Individual> selectedIndividuals;
    private List<Double> maxTurboMQList;
 
    protected GeneticAlgorithmAbstract() {
@@ -63,14 +62,6 @@ public abstract class GeneticAlgorithmAbstract {
 	  
 	  for(Double d: getMaxTurboMQList())
 		  System.out.print(d+" ");
-   }
-
-   public List<Individual> getSelectedIndividuals() {
-      return selectedIndividuals;
-   }
-
-   public void setSelectedIndividuals(List<Individual> selectedIndividuals) {
-      this.selectedIndividuals = selectedIndividuals;
    }
 
 public List<Double> getMaxTurboMQList() {
