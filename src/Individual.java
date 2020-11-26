@@ -9,7 +9,7 @@ public class Individual implements Comparable<Individual>{
 
 	public Individual(List<Node> nodeList, int numberOfCluster, String name) {
 		this.setName(name);
-		this.nodeList = new ArrayList<Node>(nodeList);
+		this.nodeList = nodeList;
 		this.numberOfCluster = numberOfCluster;
 	}
 	

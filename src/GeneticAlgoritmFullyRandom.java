@@ -19,15 +19,23 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 	void initializePopulation(int individualNumber, int numberOfCluester, List<Node> nodeList) {
 		// initialize individuals
 		// int name = 0;
+		
 		for (int i = 0; i < individualNumber; i++) {
-			Individual individual = new Individual(nodeList, numberOfCluester, i + "");
+			
+			ArrayList<Node> cloneList=new ArrayList<>();
+			for(Node node:nodeList) {
+				Node cloneNode=new Node(node.getName(),node.getId());
+				cloneNode.setDependencies(node.getDependencies());
+				cloneList.add(cloneNode);
+			}
+			Individual individual = new Individual(cloneList, numberOfCluester, i + "");
 			super.getPopulation().addIndividual(individual);
 		}
 		// give cluster name randomly
 		int cluster;
 		for (Individual individual : super.getPopulation().getIndividualList()) {
 			for (Node node : individual.getNodeList()) {
-				cluster = (int) (Math.random() * individual.getNumberOfCluster()) + 1;
+				cluster = new Random().nextInt(numberOfCluester)+1;
 				node.setCluster(cluster);
 			}
 		}
@@ -36,6 +44,7 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 
 	@Override
 	void selection() {
+		selectedIndividualList.clear();
 		List<Individual> individualList = super.getPopulation().getIndividualList();
 		int selectedParentsNumber = (int) (individualList.size() * 0.15);
 		Collections.sort(individualList);
@@ -60,7 +69,13 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 		for (int i = 0; i < parentListSize; i++) {
 			Individual child = null;
 			for (int j = i + 1; j < parentListSize; j++) {
-				child = new Individual(nodeList, cluster, i + "" + j);
+				ArrayList<Node> cloneList=new ArrayList<>();
+				for(Node node:nodeList) {
+					Node cloneNode=new Node(node.getName(),node.getId());
+					cloneNode.setDependencies(node.getDependencies());
+					cloneList.add(cloneNode);
+				}
+				child = new Individual(cloneList, cluster, i + "" + j);
 				// compare cluster of every node
 				for (int k = 0; k < nodeList.size(); k++) {
 					int compareClusterA = selectedIndividualList.get(i).getNodeList().get(k).getCluster();
@@ -93,7 +108,7 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 				ind.getNodeList().get(rndIndex).setCluster(rndCluster + 1);
 			}
 		}
-		super.getPopulation().setIndividualList(selectedIndividualList);
+		super.getPopulation().setIndividualList(getCloneIndividualList(selectedIndividualList));
 		System.out.println("RandomGa applied mutation on population! ");
 	}
 
@@ -124,4 +139,19 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 		System.out.println("RandomGa applied fitness function on population!");
 	}
 
+	private List<Individual> getCloneIndividualList(List<Individual> list){
+		List<Individual> cloneIndividualList= new ArrayList<>();
+		for (int i = 0; i < list.size(); i++) {
+			List<Node> cloneList=new ArrayList<>();
+			for(Node node:list.get(i).getNodeList()) {
+				Node cloneNode=new Node(node.getName(),node.getId());
+				cloneNode.setDependencies(node.getDependencies());
+				cloneNode.setCluster(node.getCluster());
+				cloneList.add(cloneNode);
+			}
+			Individual individual = new Individual(cloneList, list.get(i).getNumberOfCluster(), i + "");
+			cloneIndividualList.add(individual);
+	}
+		return cloneIndividualList;
+	}
 }

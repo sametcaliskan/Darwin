@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.List;
 import pivot.Pivot;
 
 public class App {
