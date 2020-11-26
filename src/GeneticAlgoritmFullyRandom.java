@@ -21,13 +21,7 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 		// int name = 0;
 		
 		for (int i = 0; i < individualNumber; i++) {
-			
-			ArrayList<Node> cloneList=new ArrayList<>();
-			for(Node node:nodeList) {
-				Node cloneNode=new Node(node.getName(),node.getId());
-				cloneNode.setDependencies(node.getDependencies());
-				cloneList.add(cloneNode);
-			}
+			List<Node> cloneList=getCloneNodeList(nodeList);
 			Individual individual = new Individual(cloneList, numberOfCluester, i + "");
 			super.getPopulation().addIndividual(individual);
 		}
@@ -69,12 +63,7 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 		for (int i = 0; i < parentListSize; i++) {
 			Individual child = null;
 			for (int j = i + 1; j < parentListSize; j++) {
-				ArrayList<Node> cloneList=new ArrayList<>();
-				for(Node node:nodeList) {
-					Node cloneNode=new Node(node.getName(),node.getId());
-					cloneNode.setDependencies(node.getDependencies());
-					cloneList.add(cloneNode);
-				}
+				List<Node> cloneList=getCloneNodeList(nodeList);
 				child = new Individual(cloneList, cluster, i + "" + j);
 				// compare cluster of every node
 				for (int k = 0; k < nodeList.size(); k++) {
@@ -153,5 +142,15 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 			cloneIndividualList.add(individual);
 	}
 		return cloneIndividualList;
+	}
+	
+	private List<Node> getCloneNodeList(List<Node> nodeList){
+		ArrayList<Node> cloneList=new ArrayList<>();
+		for(Node node:nodeList) {
+			Node cloneNode=new Node(node.getName(),node.getId());
+			cloneNode.setDependencies(node.getDependencies());
+			cloneList.add(cloneNode);
+		}
+		return cloneList;
 	}
 }
