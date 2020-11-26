@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Population {
-	List<Individual> individualList;
+	private List<Individual> individualList;
 
 	public Population() {
 		individualList = new ArrayList<>();
