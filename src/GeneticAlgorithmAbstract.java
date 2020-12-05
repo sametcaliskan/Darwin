@@ -48,8 +48,8 @@ public abstract class GeneticAlgorithmAbstract {
 
       // calculate fitness of individuals
 	  fitnessFunction();
-	  for(int i=0; i<10; i++) {
-		 System.out.println("evoluation: "+i);
+	  for(int i=0; i<100; i++) {
+		 //System.out.println("evoluation: "+i);
 	      // selection for evoluation
 	      selection();
 	      // crossover
@@ -58,11 +58,34 @@ public abstract class GeneticAlgorithmAbstract {
 	      mutation();
 	  
 	      fitnessFunction();
+	      System.gc();
 	  }
 	  
-	  for(Double d: getMaxTurboMQList())
-		  System.out.print(d+" ");
+/*	  for(Double d: getMaxTurboMQList())
+		  System.out.print(d+" ");*/
    }
+   
+	protected List<Node> getCloneNodeList(List<Node> nodeList){
+		ArrayList<Node> cloneList=new ArrayList<>();
+		List<Node> dependencyList;
+		for(Node node:nodeList) {
+			Node cloneNode=new Node(node.getName(),node.getId());
+			cloneNode.setDependencies(node.getDependencies());
+			cloneList.add(cloneNode);
+		}
+		for(Node clone:cloneList) {
+			dependencyList = new ArrayList<>();
+			for(Node depend:clone.getDependencies()) {
+				for(Node n:cloneList) {
+					if(n.getName().equals(depend.getName())) {
+						dependencyList.add(n);
+					}
+				}
+			}
+			clone.setDependencies(dependencyList);
+		}
+		return cloneList;
+	}
 
 public List<Double> getMaxTurboMQList() {
 	return maxTurboMQList;

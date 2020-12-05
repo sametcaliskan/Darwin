@@ -2,14 +2,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import turbo.TurboMQ;
 
-public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
+public class GeneticAlgoritmMutationVariance extends GeneticAlgorithmAbstract {
 	List<Individual> selectedIndividualList;
 
-	protected GeneticAlgoritmFullyRandom() {
+	protected GeneticAlgoritmMutationVariance() {
 		selectedIndividualList = new ArrayList<>();
 		Population population = new Population();
 		super.setPopulation(population);
@@ -33,7 +34,7 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 				node.setCluster(cluster);
 			}
 		}
-		//System.out.println("Population is initializated!");
+		System.out.println("Population is initializated!");
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 		}
 		super.getMaxTurboMQList().add(individualList.get(0).getTurboMQ());
 		// select list of individuals
-		//System.out.println("RandomGa applied selection on population!");
+		//System.out.println("MutationGa applied selection on population!");
 	}
 
 	@Override
@@ -89,16 +90,27 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 
 	@Override
 	void mutation() {
-		int candidateMutationSize = (int) (selectedIndividualList.get(0).getNodeList().size() * 0.01);
+		int candidateMutationSize = (int) (selectedIndividualList.get(0).getNodeList().size() * 0.1);
 		for (Individual ind : selectedIndividualList) {
+			List<Node> cloneList = getCloneNodeList(ind.getNodeList());
+			Collections.sort(cloneList);
+			Collections.reverse(cloneList);
 			for (int i = 0; i < candidateMutationSize; i++) {
-				int rndIndex = new Random().nextInt(selectedIndividualList.get(0).getNodeList().size());
+				ind.getNodeByName(cloneList.get(i).getName()).setCluster(cloneList.get(i).getCandidateCluster());
+				//ind.getNodeList().get(i).setCluster(ind.getNodeList().get(i).getCandidateCluster());
+				/*int rndIndex = new Random().nextInt(selectedIndividualList.get(0).getNodeList().size());
 				int rndCluster = new Random().nextInt(selectedIndividualList.get(0).getNumberOfCluster() + 1);
-				ind.getNodeList().get(rndIndex).setCluster(rndCluster + 1);
+				ind.getNodeList().get(rndIndex).setCluster(rndCluster + 1);*/
 			}
+			cloneList = null;
 		}
 		super.getPopulation().setIndividualList(getCloneIndividualList(selectedIndividualList));
-		//System.out.println("RandomGa applied mutation on population! ");
+		System.out.println("RandomGa applied mutation on population! ");
+	}
+	
+	public List<Node> getInterIntraRatio(int candidateSize,Individual ind) {
+		List<Node> topNodeList = new ArrayList<>();
+		return topNodeList;
 	}
 
 	@Override
@@ -143,5 +155,4 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 	}
 		return cloneIndividualList;
 	}
-	
 }

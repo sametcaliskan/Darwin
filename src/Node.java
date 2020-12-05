@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Node implements java.io.Serializable {
+public class Node implements java.io.Serializable,Comparable<Node> {
 
   private static final long serialVersionUID = 1234L;
   private List<Node> dependencies;
@@ -10,6 +12,7 @@ public class Node implements java.io.Serializable {
   private int cluster;
   private int interDependencyCount;
   private int intraDependencyCount;
+  private int candidateCluster;
 
   public Node() {
   }
@@ -78,13 +81,28 @@ public class Node implements java.io.Serializable {
   public void calculateDependency() {
     this.intraDependencyCount = 0;
     this.interDependencyCount = 0;
+    Map<Integer,Integer> interClusterCountMap = new HashMap<>();
     for (Node node : this.dependencies) {
       if (node.getCluster() == this.getCluster()) {
         incrementIntraDependencyCount();
       } else {
         incrementInterDependencyCount();
+        if(interClusterCountMap.containsKey(node.getCluster())) {
+        	interClusterCountMap.put(node.getCluster(), interClusterCountMap.get(node.getCluster())+1);
+        }else {
+        	interClusterCountMap.put(node.getCluster(), 1);
+        }
       }
     }
+    int max =0;
+    setCandidateCluster(this.getCluster());
+    for (int i : interClusterCountMap.keySet()) {
+    	if(interClusterCountMap.get(i)>max) {
+    		max =interClusterCountMap.get(i);
+    		setCandidateCluster(i);
+    	}
+    }
+    
   }
 
   private void incrementInterDependencyCount() {
@@ -115,4 +133,29 @@ public class Node implements java.io.Serializable {
     }
     return str.toString();
   }
+
+	@Override
+	public int compareTo(Node o) {
+		this.calculateDependency();
+		o.calculateDependency();
+		if(this.getInterIntraRatio()>o.getInterIntraRatio())
+			return 1;
+		else if(this.getInterIntraRatio()<o.getInterIntraRatio())
+			return -1;
+		return 0;
+	}
+	
+	public double getInterIntraRatio() {
+		if(getIntraDependencyCount()==0)
+			return getInterDependencyCount();
+		return getInterDependencyCount()/getIntraDependencyCount();
+	}
+
+	public int getCandidateCluster() {
+		return candidateCluster;
+	}
+
+	public void setCandidateCluster(int candidateCluster) {
+		this.candidateCluster = candidateCluster;
+	}
 }

@@ -22,6 +22,14 @@ public class Individual implements Comparable<Individual>{
 		else
 			return -1;
 	}
+	
+	public Node getNodeByName(String name) {
+		for(Node n:this.nodeList) {
+			if(n.getName().equals(name))
+				return n;
+		}
+		return null;
+	}
 
 	public String getName() {
 		return name;
