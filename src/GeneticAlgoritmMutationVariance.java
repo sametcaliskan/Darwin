@@ -85,27 +85,21 @@ public class GeneticAlgoritmMutationVariance extends GeneticAlgorithmAbstract {
 			}
 		}
 		selectedIndividualList = childList;
-		//System.out.println("RandomGa applied crossover on population!");
 	}
 
 	@Override
 	void mutation() {
-		int candidateMutationSize = (int) (selectedIndividualList.get(0).getNodeList().size() * 0.1);
+		int candidateMutationSize = (int) (selectedIndividualList.get(0).getNodeList().size() * 0.01);
 		for (Individual ind : selectedIndividualList) {
 			List<Node> cloneList = getCloneNodeListWithCluster(ind.getNodeList());
 			Collections.sort(cloneList);
 			Collections.reverse(cloneList);
 			for (int i = 0; i < candidateMutationSize; i++) {
 				ind.getNodeByName(cloneList.get(i).getName()).setCluster(cloneList.get(i).getCandidateCluster());
-				//ind.getNodeList().get(i).setCluster(ind.getNodeList().get(i).getCandidateCluster());
-				/*int rndIndex = new Random().nextInt(selectedIndividualList.get(0).getNodeList().size());
-				int rndCluster = new Random().nextInt(selectedIndividualList.get(0).getNumberOfCluster() + 1);
-				ind.getNodeList().get(rndIndex).setCluster(rndCluster + 1);*/
 			}
 			cloneList = null;
 		}
 		super.getPopulation().setIndividualList(getCloneIndividualList(selectedIndividualList));
-		//System.out.println("RandomGa applied mutation on population! ");
 	}
 	
 	public List<Node> getInterIntraRatio(int candidateSize,Individual ind) {

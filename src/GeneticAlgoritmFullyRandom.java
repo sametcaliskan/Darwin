@@ -84,7 +84,6 @@ public class GeneticAlgoritmFullyRandom extends GeneticAlgorithmAbstract {
 			}
 		}
 		selectedIndividualList = childList;
-		//System.out.println("RandomGa applied crossover on population!");
 	}
 
 	@Override
