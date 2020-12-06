@@ -49,7 +49,7 @@ public abstract class GeneticAlgorithmAbstract {
       // calculate fitness of individuals
 	  fitnessFunction();
 	  for(int i=0; i<100; i++) {
-		 //System.out.println("evoluation: "+i);
+		 System.out.println("evoluation: "+i);
 	      // selection for evoluation
 	      selection();
 	      // crossover
@@ -87,6 +87,29 @@ public abstract class GeneticAlgorithmAbstract {
 		return cloneList;
 	}
 
+	protected List<Node> getCloneNodeListWithCluster(List<Node> nodeList){
+		ArrayList<Node> cloneList=new ArrayList<>();
+		List<Node> dependencyList;
+		for(Node node:nodeList) {
+			Node cloneNode=new Node(node.getName(),node.getId());
+			cloneNode.setCluster(node.getCluster());
+			cloneNode.setDependencies(node.getDependencies());
+			cloneList.add(cloneNode);
+		}
+		for(Node clone:cloneList) {
+			dependencyList = new ArrayList<>();
+			for(Node depend:clone.getDependencies()) {
+				for(Node n:cloneList) {
+					if(n.getName().equals(depend.getName())) {
+						dependencyList.add(n);
+					}
+				}
+			}
+			clone.setDependencies(dependencyList);
+		}
+		return cloneList;
+	}
+	
 public List<Double> getMaxTurboMQList() {
 	return maxTurboMQList;
 }

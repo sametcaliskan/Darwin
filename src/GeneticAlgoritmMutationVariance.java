@@ -92,7 +92,7 @@ public class GeneticAlgoritmMutationVariance extends GeneticAlgorithmAbstract {
 	void mutation() {
 		int candidateMutationSize = (int) (selectedIndividualList.get(0).getNodeList().size() * 0.1);
 		for (Individual ind : selectedIndividualList) {
-			List<Node> cloneList = getCloneNodeList(ind.getNodeList());
+			List<Node> cloneList = getCloneNodeListWithCluster(ind.getNodeList());
 			Collections.sort(cloneList);
 			Collections.reverse(cloneList);
 			for (int i = 0; i < candidateMutationSize; i++) {
@@ -105,7 +105,7 @@ public class GeneticAlgoritmMutationVariance extends GeneticAlgorithmAbstract {
 			cloneList = null;
 		}
 		super.getPopulation().setIndividualList(getCloneIndividualList(selectedIndividualList));
-		System.out.println("RandomGa applied mutation on population! ");
+		//System.out.println("RandomGa applied mutation on population! ");
 	}
 	
 	public List<Node> getInterIntraRatio(int candidateSize,Individual ind) {
